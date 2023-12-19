@@ -14,7 +14,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        if
 
         startActivity(new Intent(this,SplashScreenActivity.class));
 

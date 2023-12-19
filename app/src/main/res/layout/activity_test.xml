@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="20dp"
+    android:layout_weight="2"
     tools:context=".demo.TestActivity">
 
     <LinearLayout
@@ -15,8 +16,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Speech Recognition"
-            />
+            android:text="Speech Recognition" />
 
 
         <Button
@@ -37,24 +37,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
-            android:text="Standard Data"
-            />
+            android:text="Standard Data" />
 
 
         <TextView
             android:id="@+id/standard"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="data : "
-            />
+            android:text="data : " />
 
         <Button
             android:id="@+id/test_put"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="PUT"
-            />
+            android:text="PUT" />
 
 
     </LinearLayout>

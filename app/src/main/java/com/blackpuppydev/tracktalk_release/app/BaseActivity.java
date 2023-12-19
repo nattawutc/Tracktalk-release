@@ -44,6 +44,8 @@ public class BaseActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+
+
     }
 
 
