@@ -1,20 +1,22 @@
 package com.blackpuppydev.tracktalk_release.app;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.blackpuppydev.tracktalk_release.R;
-import com.blackpuppydev.tracktalk_release.demo.TestActivity;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-public class SplashScreenActivity extends AppCompatActivity {
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+
+public class SplashScreenActivity extends BaseActivity {
+
+    private final String TAG = "SplashScreenActivity";
+    boolean isLocked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,35 +25,85 @@ public class SplashScreenActivity extends AppCompatActivity {
 
 
 
-        //for test demo
-        startActivity(new Intent(this,TestActivity.class));
-        finish();
 
-//        checkUserLogin();
-    }
-
-    private void checkUserLogin() {
 
 
     }
-
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        final int n = Math.min(permissions.length, grantResults.length);
-        for (int i = 0; i < n; i++) {
-            checkPermissionResult(requestCode, permissions[i], grantResults[i] != PackageManager.PERMISSION_GRANTED);
+    protected void onResume() {
+        super.onResume();
+
+        //for test demo
+
+        if (isLocked){
+            if (checkUserLogin().isEmpty()) {
+                startActivity(new Intent(SplashScreenActivity.this, LoginPageActivity.class));
+            } else startActivity(new Intent(SplashScreenActivity.this, MainActivity.class));
         }
+
+        permissionChecker();
+    }
+
+    private Map<String,Object> checkUserLogin() {
+
+        Map<String,Object> dataLogin = new HashMap<>();
+
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+        CollectionReference dbLogin = firebaseFirestore.collection("login");
+
+        dbLogin.get().addOnCompleteListener(task -> {
+//            Log.d("onSuccess database ","success" );
+            if (task.isSuccessful()){
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    dataLogin.put(document.getId(),document.getData());
+                    Log.d(TAG,"onSuccess get data : " + document.getId() + " => " + document.getData());
+                }
+                isLocked = true;
+            }
+        }).addOnFailureListener(e -> {
+            Log.d(TAG,"error database : " + e.getMessage());
+        });
+
+        return dataLogin;
+
+
+
+        //TODO ADD DATA TO FIREBASE
+//        Map<String,String> login = new HashMap<>();
+//        login.put("firstname","Nattawut");
+//        login.put("lastname","Chitsaad");
+//        login.put("username","nattawut.c");
+//        login.put("password","1234");
+//
+//        //case add data to firebase
+//        firebaseFirestore.collection("login").add(login).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//            @Override
+//            public void onSuccess(DocumentReference documentReference) {
+//                Log.d("onSuccess database ","success");
+//            }
+//        }).addOnFailureListener(e -> {
+//            Log.d("error database ",e.getMessage());
+//        });
+
+
+
+
+
+
+
+
+
+
+//        Map<String,String> login = new HashMap<>();
+//        login.put("firstname","Nattawut");
+//        login.put("lastname","Chitsaad");
+//        login.put("username","nattawut.c");
+//        login.put("password","1234");
+
     }
 
 
-    protected void checkPermissionResult(final int requestCode, final String permission, final boolean result) {
-
-        if (!result && (permission != null)) {
-            ActivityCompat.requestPermissions(this,new String[]{permission},requestCode);
-        }
-    }
 
 
 

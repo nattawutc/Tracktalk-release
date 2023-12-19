@@ -19,6 +19,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Tracktalkrelease">
         <activity
+            android:name=".app.LoginPageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".app.SettingActivity"
+            android:exported="false" />
+        <activity
+            android:name=".app.BaseActivity"
+            android:exported="false" />
+        <activity
             android:name=".app.SplashScreenActivity"
             android:exported="false" />
         <activity
@@ -33,7 +42,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
 
         <service android:name=".service.Recognizer" />
     </application>
